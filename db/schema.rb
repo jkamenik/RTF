@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110503193245) do
+ActiveRecord::Schema.define(:version => 20110510132103) do
 
   create_table "commits", :force => true do |t|
     t.string   "commit_id"
@@ -21,12 +21,21 @@ ActiveRecord::Schema.define(:version => 20110503193245) do
     t.datetime "updated_at"
   end
 
+  create_table "repos", :force => true do |t|
+    t.string   "name"
+    t.string   "branch",          :default => "master"
+    t.text     "repo_path"
+    t.text     "setup_command"
+    t.text     "cucumber_comand"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tested_features", :force => true do |t|
     t.integer  "commit_id"
     t.string   "test_type"
     t.integer  "features_total"
     t.integer  "features_passing"
-    t.date     "date_tested"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

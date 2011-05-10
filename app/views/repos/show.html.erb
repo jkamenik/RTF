@@ -1,0 +1,12 @@
+<h1><%= @repo.name %></h1>
+<p id="notice"><%= notice %></p>
+
+<%= @repo.repo_path %>
+<pre>
+  <%= @repo.setup_command %>
+</pre>
+<pre>
+  <%= @repo.cucumber_comand %>
+</pre>
+<%= link_to 'Edit', edit_repo_path(@repo) %> |
+<%= link_to 'Back', repos_path %>

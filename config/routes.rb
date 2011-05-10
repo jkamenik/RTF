@@ -1,4 +1,11 @@
 Rtf::Application.routes.draw do
+  # post '', 'application#recalc'
+  # match 'recalc', 'application#recalc', :as => :recalc
+  # root :to => 'application#index' # change this to chart default
+  
+  resources :repos
+  
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

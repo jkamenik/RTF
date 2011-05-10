@@ -105,7 +105,7 @@ PLATFORMS
 DEPENDENCIES
   cucumber
   cucumber-rails
-  git
+  git (= 1.2.5)
   rails (= 3.0.7)
   rspec
   rspec-core
