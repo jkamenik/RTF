@@ -102,35 +102,4 @@ describe Repo do
   context 'parse_output' do
     pending "not sure yet"
   end
-  
-  context 'capture' do
-    it 'should return 3 items, block return value, stdout, and stdin' do
-      x = Repo.new
-      values = x.capture {
-        puts 'out'
-        warn 'err'
-        4
-      }
-      values.class.should == Array
-      values[0].should == 4
-      values[1].should == "out\n"
-      values[2].should == "err\n"
-    end
-    
-    it 'should capture stdout' do
-      x = Repo.new
-      values = x.capture {
-        puts 'test'
-      }
-      values[1].should == "test\n"
-    end
-    
-    it 'should capture stderr' do
-      x = Repo.new
-      values = x.capture {
-        warn 'test'
-      }
-      values[2].should == "test\n"
-    end
-  end
 end

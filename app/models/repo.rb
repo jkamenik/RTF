@@ -1,6 +1,9 @@
 require 'fileutils'
+require 'io'
 
 class Repo < ActiveRecord::Base
+  include Io
+  
   def git_create
     g = repo rescue Git.clone(repo_path, git_path)
     g.checkout('master')
@@ -48,22 +51,5 @@ private
   end
   
   def parse_output(status,output,error)
-  end
-  
-  def capture(&block)
-    begin
-      out = $stdout
-      err = $stderr
-      $stdout = StringIO.new
-      $stderr = StringIO.new
-      status = yield
-      output = $stdout.string
-      error  = $stderr.string
-    ensure
-      $stdout = out
-      $stderr = err
-    end
-    
-    [status,output,error]
   end
 end
