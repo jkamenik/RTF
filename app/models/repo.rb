@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'io'
+require 'open3'
 
 class Repo < ActiveRecord::Base
   include Io
@@ -12,7 +13,7 @@ class Repo < ActiveRecord::Base
   def git_update
     r = repo
     r.pull
-    Commit.find_or_create r.gcommit('HEAD')
+    # Commit.find_or_create r.gcommit('HEAD')
   end
   
   def recalculate
@@ -42,8 +43,13 @@ private
     orig_ENV = ENV.to_hash
     ENV.clear
     capture do
-      system(commands.join(';'))
-      $?.exitstatus
+      stdin, stdout, stderr, thread  = Open3.popen3(commands.join(';'))
+      stdin.close
+      $stdout.print stdout.read
+      $stderr.print stderr.read
+      stdout.close
+      stderr.close
+      thread.value.exitstatus
     end
   ensure
     ENV.clear

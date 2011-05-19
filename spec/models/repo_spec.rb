@@ -28,13 +28,15 @@ describe Repo do
   end
   
   context 'git_update' do
+    before :each do
+      @repo = Repo.new
+      @git  = mock(Git)
+      @repo.stub!(:repo).and_return @git
+    end
     it 'should do a git pull' do
-      x = Repo.new
-      git = mock(Git)
-      git.should_receive(:pull).and_return nil
-      x.stub!(:repo).and_return git
+      @git.should_receive(:pull).and_return nil
       
-      x.git_update
+      @repo.git_update
     end
   end
   
@@ -71,7 +73,7 @@ describe Repo do
       x = Repo.new
       x.stub!(:setup_command).and_return 'echo foo'
       x.stub!(:cucumber_comand).and_return "echo bar"
-      x.should_receive(:system).with("echo foo;echo bar").and_return ''
+      Open3.should_receive(:popen3).with("echo foo;echo bar").and_return [NullObject,NullObject,NullObject,NullObject]
       x.run_commands
     end
     
@@ -82,7 +84,6 @@ describe Repo do
       x.stub!(:cucumber_comand).and_return "echo $TEST"
       values = x.run_commands
       values.class.should == Array
-      values[1].should == ''
       ENV['TEST'].should == 'foo'
       ENV['FOO'].should be_nil
     end
@@ -91,8 +92,8 @@ describe Repo do
       x = Repo.new
       x.stub!(:setup_command).and_return 'echo foo'
       x.stub!(:cucumber_comand).and_return "echo bar >&2"
-      x.run_commands
-
+      values = x.run_commands
+      
       values.class.should == Array
       values[1].should == "foo\n"
       values[2].should == "bar\n"
